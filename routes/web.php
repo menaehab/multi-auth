@@ -18,6 +18,20 @@ Route::get('/', function () {
     return view('welcome');
 });
 
+Route::prefix('admin')->group(function () {
+    Route::get('/login', function () {
+        return view('admin.auth.login');
+    });
+
+    Route::get('/register', function () {
+        return view('admin.auth.register');
+    });
+    Route::get('/home', function () {
+        return view('admin.index');
+    });
+});
+
+
 Route::get('/dashboard', function () {
     return view('dashboard');
 })->middleware(['auth', 'verified'])->name('dashboard');
