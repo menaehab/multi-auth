@@ -7,15 +7,15 @@
                     <div class="sb-nav-link-icon"><i class="fas fa-house-user"></i></div>
                     Home
                 </a>
-                <a class="nav-link" href="{{ route('admins.show') }}">
+                <a class="nav-link" href="{{ route('admins.index') }}">
                     <div class="sb-nav-link-icon"><i class="fas fa-user-gear"></i></div>
                     admins
                 </a>
-                <a class="nav-link" href="{{ route('users.show') }}">
+                <a class="nav-link" href="{{ route('users.index') }}">
                     <div class="sb-nav-link-icon"><i class="fas fa-user"></i></div>
                     Users
                 </a>
-                <a class="nav-link" href="{{ route('roles.show') }}">
+                <a class="nav-link" href="{{ route('roles.index') }}">
                     <div class="sb-nav-link-icon"><i class="fas fa-user-tag"></i></div>
                     Roles
                 </a>

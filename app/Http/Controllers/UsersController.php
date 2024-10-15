@@ -42,7 +42,7 @@ class UsersController extends Controller
             'email' => $request->email,
             'password' => Hash::make($request->password),
         ]);
-        return redirect()->route('users.show')->with('success', 'User created successfully.');
+        return redirect()->route('users.index')->with('success', 'User created successfully.');
     }
 
     /**
@@ -74,7 +74,7 @@ class UsersController extends Controller
         $user->update([
             'name' => $request->name,
         ]);
-        return redirect()->route('users.show', $user->id)->with('success', 'User updated successfully.');
+        return redirect()->route('users.index', $user->id)->with('success', 'User updated successfully.');
     }
 
     /**
@@ -84,6 +84,6 @@ class UsersController extends Controller
     {
         $user = User::findOrFail($id);
         $user->delete();
-        return redirect()->route('users.show')->with('success', 'User deleted successfully.');
+        return redirect()->route('users.index')->with('success', 'User deleted successfully.');
     }
 }

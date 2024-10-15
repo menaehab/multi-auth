@@ -42,7 +42,7 @@ class AdminsController extends Controller
             'email' => $request->email,
             'password' => Hash::make($request->password),
         ]);
-        return redirect()->route('admins.show')->with('success', 'Admin created successfully.');
+        return redirect()->route('admins.index')->with('success', 'Admin created successfully.');
     }
 
     /**
@@ -75,7 +75,7 @@ class AdminsController extends Controller
             'name' => $request->name,
         ]);
 
-        return redirect()->route('admins.show')->with('success', 'Admin updated successfully.');
+        return redirect()->route('admins.index')->with('success', 'Admin updated successfully.');
     }
 
     /**
@@ -85,6 +85,6 @@ class AdminsController extends Controller
     {
         $admin = Admin::findOrFail($id);
         $admin->delete();
-        return redirect()->route('admins.show')->with('success', 'Admin deleted successfully.');
+        return redirect()->route('admins.index')->with('success', 'Admin deleted successfully.');
     }
 }

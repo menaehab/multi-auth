@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Spatie\Permission\Models\Role;
+use Spatie\Permission\Models\Permission;
 
 class RolesController extends Controller
 {
@@ -11,7 +13,8 @@ class RolesController extends Controller
      */
     public function index()
     {
-        return view('admin.roles.roles');
+        $roles = Role::all();
+        return view('admin.roles.roles',get_defined_vars());
     }
 
     /**
@@ -19,23 +22,40 @@ class RolesController extends Controller
      */
     public function create()
     {
-        return view('admin.roles.rolesCreate');
+        $permissions = Permission::where('guard_name','admin')->get();
+        return view('admin.roles.rolesCreate',get_defined_vars());
     }
 
     /**
      * Store a newly created resource in storage.
      */
     public function store(Request $request)
-    {
-        //
+{
+    $role = $request->route('role');
+    $id = $role->id ?? null;
+    $validated = $request->validate([
+        'name' => ['required', 'string', 'max:255', 'unique:roles,name,' . $id],
+        'permissions' => ['nullable', 'array'],
+        'permissions.*' => ['string']
+    ]);
+    $validated['guard_name'] = 'admin';
+    $role = Role::create($validated);
+    if(isset($validated['permissions'])) {
+        foreach($validated['permissions'] as $permission => $value) {
+            $role->givePermissionTo($permission);
+        }
     }
+    return redirect()->route('roles.index')->with('success', 'Role created successfully.');
+}
 
     /**
      * Display the specified resource.
      */
     public function show(string $id)
     {
-        //
+        $role = Role::findOrFail($id);
+        $permissions = Permission::where('guard_name', 'admin')->get();
+        return view('admin.roles.rolesShow',get_defined_vars());
     }
 
     /**
@@ -44,6 +64,9 @@ class RolesController extends Controller
     public function edit(string $id)
     {
         //
+        $role = Role::findOrFail($id);
+        $permissions = Permission::where('guard_name','admin')->get();
+        return view('admin.roles.rolesEdit',get_defined_vars());
     }
 
     /**
@@ -59,6 +82,8 @@ class RolesController extends Controller
      */
     public function destroy(string $id)
     {
-        //
+        $role = Role::findOrFail($id);
+        $role->delete();
+        return redirect()->route('roles.index')->with('success', 'Role deleted successfully.');
     }
 }
