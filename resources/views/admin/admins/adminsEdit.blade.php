@@ -13,11 +13,13 @@
 
         <div class="mb-3">
             <label for="role" class="form-label">Role</label>
-            <select class="form-select" id="role">
-                <option selected>Select your role</option>
-                <option value="admin">Admin</option>
-                <option value="editor">Editor</option>
-                <option value="subscriber">Subscriber</option>
+            <select class="form-select" id="role" name="role">
+                <option selected disabled>Select your role</option>
+                @foreach ($roles as $role)
+                    <option @if ($admin->roles->contains($role->id)) selected @endif value="{{ $role->id }}">
+                        {{ $role->name }}
+                    </option>
+                @endforeach
             </select>
         </div>
 

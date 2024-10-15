@@ -18,12 +18,14 @@
 
         <div class="mb-3">
             <label for="role" class="form-label">Role</label>
-            <select class="form-select" id="role">
+            <select name="role" class="form-select" id="role">
                 <option selected>Select your role</option>
-                <option value="admin">Admin</option>
-                <option value="editor">Editor</option>
-                <option value="subscriber">Subscriber</option>
+                @foreach ($roles as $role)
+                    <option value="{{ $role->id }}">{{ $role->name }}</option>
+                @endforeach
             </select>
+            <x-input-error :messages="$errors->get('role')" class="mt-2" />
+
         </div>
 
         <div class="mb-3">

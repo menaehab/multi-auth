@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Admin;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
+use Spatie\Permission\Models\Role;
 use Illuminate\Validation\Rules\Password;
 
 class AdminsController extends Controller
@@ -23,7 +24,8 @@ class AdminsController extends Controller
      */
     public function create()
     {
-        return view('admin.admins.adminsCreate');
+        $roles = Role::where('guard_name','admin')->get();
+        return view('admin.admins.adminsCreate',get_defined_vars());
     }
 
     /**
@@ -31,17 +33,21 @@ class AdminsController extends Controller
      */
     public function store(Request $request)
     {
-        $request->validate([
+        $data = $request->validate([
             'name' => ['required', 'string', 'max:255'],
             'email' => ['required', 'string', 'lowercase', 'email', 'max:255', 'unique:'.Admin::class],
+            'role' => ['required', 'exists:roles,id'],
             'password' => ['required', 'confirmed', Password::defaults()],
         ]);
-
         $admin = Admin::create([
             'name' => $request->name,
             'email' => $request->email,
             'password' => Hash::make($request->password),
         ]);
+        if (isset($data['role'])) {
+            $role = Role::findById($data['role'], 'admin');
+            $admin->assignRole($role->name);
+        }
         return redirect()->route('admins.index')->with('success', 'Admin created successfully.');
     }
 
@@ -59,6 +65,7 @@ class AdminsController extends Controller
     public function edit(string $id)
     {
         $admin = Admin::findOrFail($id);
+        $roles = Role::where('guard_name','admin')->get();
         return view('admin.admins.adminsEdit',get_defined_vars());
     }
 
@@ -67,15 +74,19 @@ class AdminsController extends Controller
      */
     public function update(Request $request, string $id)
     {
-        $request->validate([
+        $data = $request->validate([
             'name' => ['required', 'string', 'max:255'],
+            'role' => ['required', 'exists:roles,id'],
         ]);
         $admin = Admin::findOrFail($id);
         $admin->update([
             'name' => $request->name,
         ]);
-
-        return redirect()->route('admins.index')->with('success', 'Admin updated successfully.');
+        if (isset($data['role'])) {
+            $role = Role::findById($data['role'], 'admin');
+            $admin->syncRoles($role->name);
+        }
+        return redirect()->route('admins.index')->with('success', 'Admin updated successfully and role assigned.');
     }
 
     /**

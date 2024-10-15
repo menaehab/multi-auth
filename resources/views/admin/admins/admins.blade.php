@@ -42,7 +42,11 @@
                             <td>{{ $key + 1 }}</td>
                             <td>{{ $admin->name }}</td>
                             <td>{{ $admin->email }}</td>
-                            <td>role</td>
+                            <td>
+                                @if (count($admin->getRoleNames()) > 0)
+                                    {{ $admin->getRoleNames()[0] }}
+                                @endif
+                            </td>
                             <td>
                                 <div style="display: inline-block;">
                                     <a href="{{ route('admins.edit', $admin->id) }}" class="btn btn-sm btn-warning">Edit</a>
