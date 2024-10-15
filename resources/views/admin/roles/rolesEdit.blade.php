@@ -1,7 +1,8 @@
 @extends('admin.layouts.master')
 @section('title', 'Edit roles')
 @section('content')
-    <form method="POST" action="{{ route('roles.store') }}">
+    <form method="POST" action="{{ route('roles.update', $role->id) }}">
+        @method('PUT')
         @csrf
         <div class="mb-3">
             <label for="name" class="form-label">Name</label>

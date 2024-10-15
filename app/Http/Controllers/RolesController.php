@@ -74,8 +74,23 @@ class RolesController extends Controller
      */
     public function update(Request $request, string $id)
     {
-        //
+        $role = Role::findOrFail($id);
+        $validated = $request->validate([
+            'name' => ['required', 'string', 'max:255', 'unique:roles,name,' . $role->id],
+            'permissions' => ['nullable', 'array'],
+            'permissions.*' => ['string']
+        ]);
+        $role->update([
+            'name' => $validated['name'],
+        ]);
+        if(isset($validated['permissions'])) {
+            foreach($validated['permissions'] as $permission => $value) {
+                $role->givePermissionTo($permission);
+            }
+        }
+        return redirect()->route('roles.index')->with('success', 'Role updated successfully.');
     }
+
 
     /**
      * Remove the specified resource from storage.
