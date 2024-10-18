@@ -52,7 +52,7 @@
                                     <a href="{{ route('admins.edit', $admin->id) }}" class="btn btn-sm btn-warning">Edit</a>
                                 </div>
                                 <div style="display: inline-block;">
-                                    <form method="POST" action="{{ route('admins.delete', $admin->id) }}"
+                                    <form method="POST" action="{{ route('admins.destroy', $admin->id) }}"
                                         style="display:inline;">
                                         @method('DELETE')
                                         @csrf

@@ -6,11 +6,13 @@
             {{ Session::get('success') }}
         </div>
     @endif
-    <div class="card mb-4">
-        <div class="card-body text-end">
-            <a href="{{ route('users.create') }}" class="btn btn-success">Add New</a>
+    @if (permission(['add_user']))
+        <div class="card mb-4">
+            <div class="card-body text-end">
+                <a href="{{ route('users.create') }}" class="btn btn-success">Add New</a>
+            </div>
         </div>
-    </div>
+    @endif
     <div class="card mb-4">
         <div class="card-header">
             <i class="fas fa-table me-1"></i>
@@ -23,7 +25,9 @@
                         <th>#</th>
                         <th>Name</th>
                         <th>Email</th>
-                        <th>Actions</th>
+                        @if (!permission(['show_user']))
+                            <th>Actions</th>
+                        @endif
                     </tr>
                 </thead>
                 <tfoot>
@@ -31,7 +35,9 @@
                         <th>#</th>
                         <th>Name</th>
                         <th>Email</th>
-                        <th>Actions</th>
+                        @if (!permission(['show_user']))
+                            <th>Actions</th>
+                        @endif
                     </tr>
                 </tfoot>
                 <tbody>
@@ -40,19 +46,26 @@
                             <td>{{ $key + 1 }}</td>
                             <td>{{ $user->name }}</td>
                             <td>{{ $user->email }}</td>
-                            <td>
-                                <div style="display: inline-block;">
-                                    <a href="{{ route('users.edit', $user->id) }}" class="btn btn-sm btn-warning">Edit</a>
-                                </div>
-                                <div style="display: inline-block;">
-                                    <form method="POST" action="{{ route('users.delete', $user->id) }}"
-                                        style="display:inline;">
-                                        @method('DELETE')
-                                        @csrf
-                                        <button type="submit" class="btn btn-sm btn-danger">Delete</button>
-                                    </form>
-                                </div>
-                            </td>
+                            @if (!permission(['show_user']))
+                                <td>
+                                    @if (permission(['edit_user']))
+                                        <div style="display: inline-block;">
+                                            <a href="{{ route('users.edit', $user->id) }}"
+                                                class="btn btn-sm btn-warning">Edit</a>
+                                        </div>
+                                    @endif
+                                    @if (permission(['delete_user']))
+                                        <div style="display: inline-block;">
+                                            <form method="POST" action="{{ route('users.destory', $user->id) }}"
+                                                style="display:inline;">
+                                                @method('DELETE')
+                                                @csrf
+                                                <button type="submit" class="btn btn-sm btn-danger">Delete</button>
+                                            </form>
+                                        </div>
+                                    @endif
+                                </td>
+                            @endif
                         </tr>
                     @endforeach
                 </tbody>

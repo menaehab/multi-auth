@@ -9,6 +9,11 @@ use Illuminate\Validation\Rules\Password;
 
 class UsersController extends Controller
 {
+    function __construct() {
+        $this->middleware('CheckPermission:add_user')->only(['create','store']);
+        $this->middleware('CheckPermission:edit_user')->only(['edit','update']);
+        $this->middleware('CheckPermission:delete_user')->only(['destroy']);
+    }
     /**
      * Display a listing of the resource.
      */

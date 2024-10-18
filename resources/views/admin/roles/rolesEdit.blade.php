@@ -10,7 +10,6 @@
                 placeholder="Enter your name">
             <x-input-error :messages="$errors->get('name')" class="mt-2" />
         </div>
-
         <div class="mb-3">
             <label for="permissions" class="form-label">Permissions</label>
             <div id="permissions">

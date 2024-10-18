@@ -45,7 +45,7 @@
                                     <a href="{{ route('roles.edit', $role->id) }}" class="btn btn-sm btn-warning">Edit</a>
                                 </div>
                                 <div style="display: inline-block;">
-                                    <form method="POST" action="{{ route('roles.delete', $role->id) }}"
+                                    <form method="POST" action="{{ route('roles.destroy', $role->id) }}"
                                         style="display:inline;">
                                         @method('DELETE')
                                         @csrf
