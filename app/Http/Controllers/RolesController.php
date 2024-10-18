@@ -83,10 +83,8 @@ class RolesController extends Controller
         $role->update([
             'name' => $validated['name'],
         ]);
-        if(isset($validated['permissions'])) {
-            foreach($validated['permissions'] as $permission => $value) {
-                $role->givePermissionTo($permission);
-            }
+        if (isset($validated['permissions'])) {
+            $role->syncPermissions(array_keys($validated['permissions']));
         }
         return redirect()->route('roles.index')->with('success', 'Role updated successfully.');
     }

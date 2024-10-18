@@ -25,9 +25,7 @@
                         <th>#</th>
                         <th>Name</th>
                         <th>Email</th>
-                        @if (!permission(['show_user']))
-                            <th>Actions</th>
-                        @endif
+                        <th>Actions</th>
                     </tr>
                 </thead>
                 <tfoot>
@@ -35,9 +33,7 @@
                         <th>#</th>
                         <th>Name</th>
                         <th>Email</th>
-                        @if (!permission(['show_user']))
-                            <th>Actions</th>
-                        @endif
+                        <th>Actions</th>
                     </tr>
                 </tfoot>
                 <tbody>
@@ -46,26 +42,24 @@
                             <td>{{ $key + 1 }}</td>
                             <td>{{ $user->name }}</td>
                             <td>{{ $user->email }}</td>
-                            @if (!permission(['show_user']))
-                                <td>
-                                    @if (permission(['edit_user']))
-                                        <div style="display: inline-block;">
-                                            <a href="{{ route('users.edit', $user->id) }}"
-                                                class="btn btn-sm btn-warning">Edit</a>
-                                        </div>
-                                    @endif
-                                    @if (permission(['delete_user']))
-                                        <div style="display: inline-block;">
-                                            <form method="POST" action="{{ route('users.destory', $user->id) }}"
-                                                style="display:inline;">
-                                                @method('DELETE')
-                                                @csrf
-                                                <button type="submit" class="btn btn-sm btn-danger">Delete</button>
-                                            </form>
-                                        </div>
-                                    @endif
-                                </td>
-                            @endif
+                            <td>
+                                @if (permission(['edit_user']))
+                                    <div style="display: inline-block;">
+                                        <a href="{{ route('users.edit', $user->id) }}"
+                                            class="btn btn-sm btn-warning">Edit</a>
+                                    </div>
+                                @endif
+                                @if (permission(['delete_user']))
+                                    <div style="display: inline-block;">
+                                        <form method="POST" action="{{ route('users.destroy', $user->id) }}"
+                                            style="display:inline;">
+                                            @method('DELETE')
+                                            @csrf
+                                            <button type="submit" class="btn btn-sm btn-danger">Delete</button>
+                                        </form>
+                                    </div>
+                                @endif
+                            </td>
                         </tr>
                     @endforeach
                 </tbody>
